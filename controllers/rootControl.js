@@ -1,6 +1,7 @@
 const model = require('../models/rootModel')
 
 exports.getChildren = (req, res) => {
+    let toReturn = {"name": '', "children": [], "type":''}
     try{
         for(let i = 0; i < model.length; i++){
             if(model[i].name.localeCompare(req.params.current) == 0){
@@ -11,9 +12,14 @@ exports.getChildren = (req, res) => {
                         let toAdd = {"name": children[j].name, "type": children[j].type}
                         nextDir.push(toAdd)
                     }
-                    return res.json(nextDir)
+                    toReturn.name = model[i].name
+                    toReturn.children = nextDir
+                    toReturn.type = model[i].type
+                    return res.json(toReturn)
                 }else{
-                    return res.json([model[i]])
+                    toReturn.name = model[i].name
+                    toReturn.type = model[i].type
+                    return res.json(toReturn)
                 }
             }
         }

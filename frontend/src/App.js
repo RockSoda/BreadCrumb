@@ -12,10 +12,15 @@ class App extends Component{
   constructor(props) { 
       super(props); 
       this.state = {
-        data: [
-        {name: this.props.name,
-         type: this.props.type}
-      ]};
+        data:{
+          name: this.props.name,
+          type: this.props.type,
+          children: [
+            {name: this.props.children_name,
+            type: this.props.children_datatype}
+          ]
+        }
+    };
   } 
   componentDidMount() {
     this._isMounted = true

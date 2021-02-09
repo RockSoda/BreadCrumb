@@ -4,8 +4,9 @@ import { BrowserRouter as Switch, Route } from "react-router-dom"
 import { useState, useEffect, } from "react"
 
 function Nav(recieved){
-    const data = recieved.data.data
-    const path = recieved.location.pathname
+    const raw = recieved.data.data
+    const children = raw.children
+    let path = recieved.location.pathname
     const [addr, setAddr] = useState([])
     useEffect(() => {
         const list = path.split('/')
@@ -24,20 +25,20 @@ function Nav(recieved){
 
     const handleClick = (evt, name) => {
         if(evt.type === 'click'){
-            toFetch(name)
+            path = path + '/' + name
         }
     }
 
     const routing = ({match}) => {
         return(<>
             <>
-            {match.isExact && addr.map(item => (item.type == 'dir') ? (
+            {typeof(addr.children) == 'undefined' ? '' : (match.isExact && (addr.type == 'dir') ? (addr.children.map(item => (
                 <div>
                     <Link key = {item.name} to = {`${match.url}/${item.name}`} onClick={((evt) => handleClick(evt, item.name))}>{item.name}</Link>
                 </div>
-            ) : (
+            ))) : (
                 <div>
-                    <span>This is {item.name}</span>
+                    <span>This is {addr.name}</span>
                 </div>
             ))}
             </>
@@ -49,7 +50,7 @@ function Nav(recieved){
 
     const root = ({match}) => {
         return(<>
-            {match.isExact && data.map(item => (
+            {match.isExact && children.map(item => (
                 <div>
                     <Link key = {item.name} to = {item.name} onClick={((evt) => handleClick(evt, item.name))}>{item.name}</Link>
                 </div>
