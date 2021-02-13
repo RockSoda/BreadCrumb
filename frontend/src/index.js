@@ -3,13 +3,13 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
-import { BrowserRouter as Router} from 'react-router-dom';
+import { BrowserRouter as Router } from 'react-router-dom';
 
-class Index extends Component{
-  render(){
+class Index extends Component {
+  render() {
     return <React.StrictMode>
-                <Router><App /></Router>
-            </React.StrictMode>
+      <Router><App /></Router>
+    </React.StrictMode>
   }
 }
 

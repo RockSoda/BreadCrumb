@@ -14,18 +14,18 @@ const Breadcrumbs = (props) => {
     return (<>
         <MUIBreadcrumbs aria-label="breadcrumb">
 
-        {pathnames.map((name, index) => {
+            {pathnames.map((name, index) => {
 
-            const routeTo = `/${pathnames.slice(0, index + 1).join('/')}`
-            const isLast = (index === pathnames.length - 1)
+                const routeTo = `/${pathnames.slice(0, index + 1).join('/')}`
+                const isLast = (index === pathnames.length - 1)
 
-            return(
-                isLast ? (<Typography key={name}> {name} </Typography>)
-             : (<Link key={name} color="inherit" 
-             onClick={() => {history.push(routeTo)}}> {name} </Link>)
-             )
+                return (
+                    isLast ? (<Typography key={name}> {name} </Typography>)
+                        : (<Link key={name} color="inherit"
+                            onClick={() => { history.push(routeTo) }}> {name} </Link>)
+                )
 
-        })}
+            })}
         </MUIBreadcrumbs>
     </>);
 }
