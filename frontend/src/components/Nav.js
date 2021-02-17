@@ -15,15 +15,15 @@ function Nav(recieved) {
     }, [path])
 
     useEffect(() => {
-        if(typeof(addr.message) == 'undefined'){
+        if (typeof (addr.message) == 'undefined') {
             setFlag(true)
         }
     }, [addr])
 
     useEffect(() => {
-        if(flag){
+        if (flag) {
             enableBreadCrumb()
-        }else{
+        } else {
             disableBreadCrumb()
         }
     }, [flag])
@@ -31,7 +31,7 @@ function Nav(recieved) {
     const enableBreadCrumb = () => {
         const breadcrumbs = document.querySelectorAll('ol')[0].childNodes
         breadcrumbs.forEach((element, i) => {
-            if(i%2 == 0){
+            if (i % 2 == 0) {
                 element.style.pointerEvents = 'auto'
             }
         })
@@ -40,7 +40,7 @@ function Nav(recieved) {
     const disableBreadCrumb = () => {
         const breadcrumbs = document.querySelectorAll('ol')[0].childNodes
         breadcrumbs.forEach((element, i) => {
-            if(i%2 == 0){
+            if (i % 2 == 0) {
                 element.style.pointerEvents = 'none'
             }
         })
