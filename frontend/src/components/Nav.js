@@ -1,17 +1,44 @@
 import '../App.css'
 import { Link } from 'react-router-dom'
 import { BrowserRouter as Switch, Route } from "react-router-dom"
-import { useState, useEffect, } from "react"
+import { useState, useEffect } from "react"
 
 function Nav(recieved) {
-    const raw = recieved.data.data
-    const children = raw.children
-    let path = recieved.location.pathname
+    const path = recieved.location.pathname
     const [addr, setAddr] = useState([])
+    const [flag, setFlag] = useState(true)
+
     useEffect(() => {
+        disableBreadCrumb()
+        setFlag(false)
         const link = path.split('/').join('%20')
         toFetch(link)
     }, [path])
+
+    useEffect(() => {
+        if(typeof(addr.message) == 'undefined'){
+            enableBreadCrumb()
+            setFlag(true)
+        }
+    }, [addr])
+
+    const enableBreadCrumb = () => {
+        const breadcrumbs = document.querySelectorAll('ol')[0].childNodes
+        breadcrumbs.forEach((element, i) => {
+            if(i%2 == 0){
+                element.style.pointerEvents = 'auto'
+            }
+        })
+    }
+
+    const disableBreadCrumb = () => {
+        const breadcrumbs = document.querySelectorAll('ol')[0].childNodes
+        breadcrumbs.forEach((element, i) => {
+            if(i%2 == 0){
+                element.style.pointerEvents = 'none'
+            }
+        })
+    }
 
     const toFetch = async (link) => {
         await fetch(`http://localhost:3001/${link}`)
@@ -21,9 +48,10 @@ function Nav(recieved) {
             })
     }
 
-    const handleClick = (evt, name) => {
+    const handleClick = (evt) => {
         if (evt.type === 'click') {
-            path = path + '/' + name
+            disableBreadCrumb()
+            setFlag(false)
         }
     }
 
@@ -32,7 +60,7 @@ function Nav(recieved) {
             <>
                 {typeof (addr.children) == 'undefined' ? '' : (match.isExact && (addr.type == 'dir') ? (addr.children.map(item => (
                     <div>
-                        <Link key={item.name} to={`${match.url}/${item.name}`} onClick={((evt) => handleClick(evt, item.name))}>{item.name}</Link>
+                        <Link key={item.name} to={(flag) ? (`${match.url}/${item.name}`) : `${match.url}`} onClick={((evt) => handleClick(evt))}>{item.name}</Link>
                     </div>
                 ))) : (
                         <div>
@@ -46,19 +74,8 @@ function Nav(recieved) {
         </>)
     }
 
-    const root = ({ match }) => {
-        return (<>
-            {match.isExact && children.map(item => (
-                <div>
-                    <Link key={item.name} to={item.name} onClick={((evt) => handleClick(evt, item.name))}>{item.name}</Link>
-                </div>
-            ))}
-        </>)
-    }
-
     return (
         <>
-            <Route exact path='/' component={root} />
             <Route path={path} component={routing} />
         </>
     )
