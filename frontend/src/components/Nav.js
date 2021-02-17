@@ -9,7 +9,6 @@ function Nav(recieved) {
     const [flag, setFlag] = useState(true)
 
     useEffect(() => {
-        disableBreadCrumb()
         setFlag(false)
         const link = path.split('/').join('%20')
         toFetch(link)
@@ -17,10 +16,17 @@ function Nav(recieved) {
 
     useEffect(() => {
         if(typeof(addr.message) == 'undefined'){
-            enableBreadCrumb()
             setFlag(true)
         }
     }, [addr])
+
+    useEffect(() => {
+        if(flag){
+            enableBreadCrumb()
+        }else{
+            disableBreadCrumb()
+        }
+    }, [flag])
 
     const enableBreadCrumb = () => {
         const breadcrumbs = document.querySelectorAll('ol')[0].childNodes
@@ -50,7 +56,6 @@ function Nav(recieved) {
 
     const handleClick = (evt) => {
         if (evt.type === 'click') {
-            disableBreadCrumb()
             setFlag(false)
         }
     }
